@@ -111,7 +111,7 @@ public class ControllerTest {
     Task task = new Task();
     task.setId(taskId);
 
-    when(taskService.removeTask(eq(taskId))).thenReturn(task);
+    when(taskService.deleteTask(eq(taskId))).thenReturn(task);
 
     String expectedResponse = "{\"id\":12345,\"name\":null,\"description\":null," +
             "\"created\":null,\"comments\":null,\"status\":\"TODO\",\"dueDate\":null," +
@@ -124,7 +124,7 @@ public class ControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().json(expectedResponse));
 
-    verify(taskService).removeTask(eq(taskId));
+    verify(taskService).deleteTask(eq(taskId));
   }
 
   private String dateConverter(LocalDateTime time) {

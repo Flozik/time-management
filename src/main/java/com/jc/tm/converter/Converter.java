@@ -20,7 +20,7 @@ import java.util.List;
 public class Converter {
 
     private String dateConverter(LocalDateTime time) {
-        log.debug("dateConverter method. Input values:{}", time);
+        log.info("dateConverter method. Input values:{}", time);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
         String date = time.format(dateTimeFormatter);
@@ -28,7 +28,7 @@ public class Converter {
     }
 
     public TaskDto taskToTaskDto(Task task) {
-        log.debug("taskToTaskDto method. Input values:{}", task);
+        log.info("taskToTaskDto method. Input values:{}", task);
         TaskDto taskDto = new TaskDto();
         LocalDateTime created = task.getCreated();
         LocalDateTime dueDate = task.getDueDate();
@@ -58,7 +58,7 @@ public class Converter {
     }
 
     public Collection<TaskDto> parsingTaskDataToTaskDTO(Collection<Task> tasks) {
-        log.debug("parsingTaskDataToTaskDTO method.");
+        log.info("parsingTaskDataToTaskDTO method.");
         Collection<TaskDto> taskResult = new ArrayList<>();
         for (Task task : tasks) {
             TaskDto taskDto = taskToTaskDto(task);
@@ -68,7 +68,7 @@ public class Converter {
     }
 
     private CommentDto commentToCommentDto(Comment comment) {
-        log.debug("commentToCommentDto method. Input values:{}", comment);
+        log.info("commentToCommentDto method. Input values:{}", comment);
         CommentDto commentDto = new CommentDto();
         LocalDateTime dateCreated = comment.getCreated();
         if (dateCreated != null) {
@@ -81,7 +81,7 @@ public class Converter {
     }
 
     private Collection<CommentDto> parsingCommentDataToCommentDTO(Collection<Comment> comments) {
-        log.debug("parsingCommentDataToCommentDTO method.");
+        log.info("parsingCommentDataToCommentDTO method.");
         Collection<CommentDto> commentResult = new ArrayList<>();
 
         for (Comment comment : comments) {
@@ -92,7 +92,7 @@ public class Converter {
     }
 
     public ProjectDto projectToProjectDto(Project project) {
-        log.debug("converting project to project DTO", project);
+        log.info("converting project to project DTO", project);
         ProjectDto projectDto = new ProjectDto();
         projectDto.setId(project.getId());
         projectDto.setName(project.getName());
@@ -100,7 +100,7 @@ public class Converter {
     }
 
     public List<ProjectDto> parsingProjectDataToProjectDTO(List<Project> projects) {
-        log.debug("parsing ProjectData to Project DTO");
+        log.info("parsing ProjectData to Project DTO");
         List<ProjectDto> projectDtoList = new ArrayList<>();
         for (Project project : projects) {
             ProjectDto projectDto = projectToProjectDto(project);

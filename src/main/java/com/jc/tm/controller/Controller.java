@@ -41,7 +41,7 @@ public class Controller {
 
   @GetMapping
   public Collection<TaskDto> mainPage() {
-    log.debug("Show last five tasks");
+    log.info("Show last five tasks");
     PaginationDto paginationDto = new PaginationDto();
     paginationDto.setPage(0);
     paginationDto.setSize(5);
@@ -53,7 +53,7 @@ public class Controller {
   @PostMapping("/create-task")
   @ResponseStatus(HttpStatus.CREATED)
   public Task createTask(@RequestBody Task task) {
-    log.debug("Create task page");
+    log.info("Create task page");
     return this.service.createTask(task);
   }
 
@@ -61,7 +61,7 @@ public class Controller {
   public Collection<TaskDto> show(String searchBy,
                                   @PathVariable(value = "pageNumber") int pageNumber,
                                   @RequestParam(name = "sortBy", required = false) String sortBy) {
-    log.debug("Show tasks page with params: searchBy={}, pageNumber={}, sortBy={}", searchBy, pageNumber, sortBy);
+    log.info("Show tasks page with params: searchBy={}, pageNumber={}, sortBy={}", searchBy, pageNumber, sortBy);
     PaginationDto paginationDto = new PaginationDto();
     paginationDto.setIndex(pageNumber);
     paginationDto.setSize(pageSize);
@@ -72,7 +72,7 @@ public class Controller {
 
   @GetMapping("show-tasks/searchBy={searchBy}")
   public Collection<TaskDto> findByName(@PathVariable String searchBy) {
-    log.debug("Find task by name with value = {}", searchBy);
+    log.info("Find task by name with value = {}", searchBy);
     String sortBy = "";
     int pageNumber = 1;
     PaginationDto paginationDto = new PaginationDto();
@@ -85,7 +85,7 @@ public class Controller {
   //TODO - DONE
   @GetMapping("/task/{taskId}")
   public TaskDto getTaskById(@PathVariable long taskId) {
-    log.debug("Show one task with id={}", taskId);
+    log.info("Show one task with id={}", taskId);
     Task task = service.getTask(taskId);
     return converter.taskToTaskDto(task);
   }
@@ -93,32 +93,32 @@ public class Controller {
   //TODO - DONE
   @PostMapping(value = {"show-tasks/task/update/{taskId}"})
   public Task updateTaskStatus(@PathVariable long taskId, @RequestBody TaskDto status) {
-    log.debug("Update TasksTableRows Status: {}", status);
+    log.info("Update TasksTableRows Status: {}", status);
     Task task = service.getTask(taskId);
     return service.updateTaskStatus(task, status);
   }
 
   //TODO = DONE
   @PostMapping(value = {"/task/update/{taskId}"})
-  public Task updateTask(@PathVariable long taskId, @Valid @RequestBody TaskDto taskDto) {
+  public Task updateTask(@PathVariable long taskId,
+                         @Valid @RequestBody TaskDto taskDto) {
     log.info("Update task={} with id={}", taskDto, taskId);
     Task task = service.getTask(taskId);
     return service.updateTaskNew(task, taskDto);
   }
 
-  //TODO - DONE
-  @GetMapping("/delete-task/{taskId}")
+  @PostMapping("/delete-task/{taskId}")
   @ResponseStatus(HttpStatus.OK)
-  public Task deleteTask(@PathVariable long taskId) {
-    log.debug("Delete task with id={}", taskId);
-    return service.removeTask(taskId);
+  public void deleteTask(@PathVariable long taskId) {
+    log.info("Delete task with id={}", taskId);
+    service.deleteTask(taskId);
   }
 
   //Comment controllers
 
   @PostMapping("/task/{taskId}/added-comment")
   public String addComment(@ModelAttribute("comment") Comment comment, @PathVariable("taskId") long taskId) {
-    log.debug("Add comment={} in task with id={}", comment, taskId);
+    log.info("Add comment={} in task with id={}", comment, taskId);
     service.addComment(taskId, comment);
     return "redirect:/task/" + taskId;
   }
@@ -127,7 +127,7 @@ public class Controller {
   public String editComment(@ModelAttribute("comment") Comment comment,
                             @PathVariable("commentId") long commentId,
                             @PathVariable("taskId") long taskId) {
-    log.debug("Update comment with id={} in task with id={}", commentId, taskId);
+    log.info("Update comment with id={} in task with id={}", commentId, taskId);
     comment.setId(commentId);
     service.updateComment(comment);
     return "redirect:/task/" + taskId;
@@ -136,7 +136,7 @@ public class Controller {
 
   @GetMapping("/task/{taskId}/comment-del/{commentId}")
   public String deleteComment(@PathVariable("commentId") long commentId, @PathVariable("taskId") long taskId) {
-    log.debug("Delete comment with id={} in task with id={}", commentId, taskId);
+    log.info("Delete comment with id={} in task with id={}", commentId, taskId);
     service.removeComment(commentId);
     return "redirect:/task/" + taskId;
   }
@@ -146,14 +146,14 @@ public class Controller {
   //TODO - DONE
   @PostMapping("/add-project")
   public Project addProject(@RequestBody Project project) {
-    log.debug("Add project page. Project={}", project);
+    log.info("Add project page. Project={}", project);
     return projectService.saveProject(project);
   }
 
   //TODO - DONE
   @GetMapping("/get-all-projects")
   public Collection<ProjectDto> loadProjects() {
-    log.debug("loading all projects");
+    log.info("loading all projects");
     return converter.parsingProjectDataToProjectDTO(projectService.loadProject());
   }
 }

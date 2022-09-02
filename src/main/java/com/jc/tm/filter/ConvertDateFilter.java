@@ -18,7 +18,7 @@ public class ConvertDateFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        log.debug("{}",servletRequest.getAttribute("name"));
+        log.info("{}",servletRequest.getAttribute("name"));
         String data = servletRequest.getParameter("name");
 
         String sDueDate = servletRequest.getParameter("dueDate");
@@ -27,7 +27,7 @@ public class ConvertDateFilter implements Filter {
             log.info("due date is: {}", dueDate);
         }
 
-        log.debug(data);
+        log.info(data);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }
