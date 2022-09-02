@@ -15,16 +15,16 @@ import javax.sql.DataSource;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(showSql = true)
 public class H2Config {
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1");
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
+  @Bean
+  public DataSource dataSource() {
+    DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    dataSource.setDriverClassName("org.h2.Driver");
+    dataSource.setUrl("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1");
+    dataSource.setUsername("sa");
+    dataSource.setPassword("");
 
-        return dataSource;
-    }
+    return dataSource;
+  }
 
 //    @Bean
 //    public ITaskService taskService(TaskDao taskDao, CommentDao commentDao){

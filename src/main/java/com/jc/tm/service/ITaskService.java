@@ -14,21 +14,14 @@ public interface ITaskService {
      * @param newTask new entity wich will present task object
      * @return saved entity with generated id;
      */
-    public Task saveTask(Task newTask) ;
+    public Task createTask(Task newTask) ;
 
     /**
      * remove task from database. the task will be removed by id, but first method should find proper record into database
      * @param id identiifier for task
      * @return removed task object or null if task by id does not exists
      */
-    public Task removeTask(Long id) ;
-
-    /**
-     * remove task from data base. this method calls @see removeTask(Long id)
-     * @param task object task with identifier for monipulation
-     * @return removed task object of null if task does not exists
-     */
-    public Task removeTask(Task task) ;
+    public void deleteTask(Long id) ;
 
     public Task updateTaskStatus(Task freshTask, TaskDto status);
 

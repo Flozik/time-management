@@ -1,7 +1,7 @@
 package com.jc.tm.db.entity;
 
-import com.jc.tm.util.Status;
 import com.jc.tm.util.Priority;
+import com.jc.tm.util.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

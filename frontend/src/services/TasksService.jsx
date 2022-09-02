@@ -34,7 +34,7 @@ class TasksService {
   }
 
   deleteTask(taskId) {
-    return axios.get(DELETETASK_URL + "/" + taskId);
+    return axios.post(DELETETASK_URL + "/" + taskId);
   }
 
   getTask(taskId) {

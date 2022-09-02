@@ -13,15 +13,15 @@ import javax.sql.DataSource;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class DbConfig {
 
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/example");
-        dataSource.setUsername("example");
-        dataSource.setPassword("changeme");
+  @Bean
+  public DataSource dataSource() {
+    DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+    dataSource.setUrl("jdbc:mysql://localhost:3306/example");
+    dataSource.setUsername("example");
+    dataSource.setPassword("changeme");
 
-        return dataSource;
-    }
+    return dataSource;
+  }
 
 }
