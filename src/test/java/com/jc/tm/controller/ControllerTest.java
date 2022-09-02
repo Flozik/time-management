@@ -1,46 +1,131 @@
 package com.jc.tm.controller;
 
 import com.jc.tm.converter.Converter;
-import com.jc.tm.util.Status;
-import com.jc.tm.db.entity.Comment;
+import com.jc.tm.db.entity.Project;
 import com.jc.tm.db.entity.Task;
-import com.jc.tm.util.Priority;
+import com.jc.tm.dto.TaskDto;
+import com.jc.tm.service.impl.ProjectServiceImpl;
 import com.jc.tm.service.impl.TaskServiceImpl;
+import com.jc.tm.util.Priority;
+import com.jc.tm.util.Status;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
 
-import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(Dashboard.class)
-class DashboardTest {
+//@RunWith(SpringRunner.class)
+//@WebMvcTest(Controller.class)
+@ExtendWith(MockitoExtension.class)
+public class ControllerTest {
 
-  @Autowired
+  private final TaskServiceImpl taskService = mock(TaskServiceImpl.class);
+  private final ProjectServiceImpl projectService = mock(ProjectServiceImpl.class);
+  private final Converter converter = new Converter();
+  private final Controller controller = new Controller(taskService, projectService, converter);
   private MockMvc mockMvc;
 
-  @MockBean
-  private TaskServiceImpl taskServiceMock;
-  @MockBean
-  private Converter converter;
+  @BeforeEach
+  public void setMockMvc() {
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+  }
 
-//    @Before
-//    public void setUp() {
-//        mockMvc = MockMvcBuilders.standaloneSetup(new Dashboard(taskServiceMock, converter)).build();
-//    }
+  @Test
+  public void mainPageTest() throws Exception {
+    this.mockMvc.perform(
+                    MockMvcRequestBuilders.get("/"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0]").doesNotHaveJsonPath());
+  }
+
+  @Test
+  void createTaskTest() throws Exception {
+    Project project = new Project();
+    project.setName("Test project");
+    Task task = new Task();
+    task.setId(1L);
+    task.setName("Name");
+    task.setDescription("Some description");
+    task.setStatus(Status.IN_PROGRESS);
+    task.setPriority(Priority.HIGH);
+    task.setProgress(10);
+    task.setProjects(project);
+
+    when(taskService.createTask(any(Task.class))).thenReturn(task);
+
+    this.mockMvc.perform(
+                    MockMvcRequestBuilders.post("/create-task")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"Just send\": \"some information\"}"))
+            .andDo(print())
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("id").value("1"))
+            .andExpect(jsonPath("name").value("Name"))
+            .andExpect(jsonPath("description").value("Some description"))
+            .andExpect(jsonPath("status").value("IN_PROGRESS"))
+            .andExpect(jsonPath("priority").value("HIGH"))
+            .andExpect(jsonPath("progress").value("10"))
+            .andExpect(jsonPath("projects").value(project));
+
+    verify(taskService).createTask(any(Task.class));
+  }
+
+  @Test
+  void updateTaskTest() throws Exception {
+    final Long taskId = 12345L;
+    Task task = new Task();
+    task.setId(taskId);
+    task.setName("Some name");
+    task.setDescription("Some description");
+    /*TaskDto taskDto = new TaskDto();
+    taskDto.setName("New name");*/
+    Task updatedTask = new Task();
+    updatedTask.setName("New name");
+    when(taskService.getTask(taskId)).thenReturn(task);
+    when(taskService.updateTaskNew(eq(task), any(TaskDto.class))).thenReturn(updatedTask);
+
+    this.mockMvc.perform(
+                    MockMvcRequestBuilders.post("/task/update/{taskId}", taskId)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"name\": \"some information\"}"))
+            .andDo(print())
+            .andExpect(status().isOk());
+  }
+
+  @Test
+  void deleteTaskTest() throws Exception {
+    final Long taskId = 12345L;
+    Task task = new Task();
+    task.setId(taskId);
+
+    when(taskService.removeTask(eq(taskId))).thenReturn(task);
+
+    String expectedResponse = "{\"id\":12345,\"name\":null,\"description\":null," +
+            "\"created\":null,\"comments\":null,\"status\":\"TODO\",\"dueDate\":null," +
+            "\"priority\":\"NORMAL\",\"progress\":0,\"projects\":null}";
+
+    this.mockMvc.perform(
+                    MockMvcRequestBuilders.get("/delete-task/{taskId}", taskId)
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().json(expectedResponse));
+
+    verify(taskService).removeTask(eq(taskId));
+  }
 
   private String dateConverter(LocalDateTime time) {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");

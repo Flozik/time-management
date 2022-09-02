@@ -15,11 +15,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = {DbConfig.class})
 public class ContextTest {
 
-    @Autowired
-    private ApplicationContext context;
+  @Autowired
+  private ApplicationContext context;
 
-    @Test
-    public void contextTest(){
-        assertThat(context).isNotNull();
-    }
+  @Test
+  public void contextTest() {
+    assertThat(context).isNotNull();
+  }
+
 }

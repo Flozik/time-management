@@ -14,7 +14,7 @@ public interface ITaskService {
      * @param newTask new entity wich will present task object
      * @return saved entity with generated id;
      */
-    public Task saveTask(Task newTask) ;
+    public Task createTask(Task newTask) ;
 
     /**
      * remove task from database. the task will be removed by id, but first method should find proper record into database

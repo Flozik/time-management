@@ -11,10 +11,11 @@ import com.jc.tm.dto.ProjectDto;
 import com.jc.tm.service.impl.ProjectServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
-
 
 /**
  * this class is controller and it merge database with UI
@@ -24,7 +25,7 @@ import java.util.Collection;
 @RestController
 @CrossOrigin("http://localhost:3000/")
 @RequestMapping("/")
-public class Dashboard {
+public class Controller {
   private final int pageSize = 10;
 
   private final TaskServiceImpl service;
@@ -32,7 +33,7 @@ public class Dashboard {
   private final Converter converter;
 
   @Autowired
-  public Dashboard(TaskServiceImpl service, ProjectServiceImpl projectService, Converter converter) {
+  public Controller(TaskServiceImpl service, ProjectServiceImpl projectService, Converter converter) {
     this.service = service;
     this.projectService = projectService;
     this.converter = converter;
@@ -46,6 +47,14 @@ public class Dashboard {
     paginationDto.setSize(5);
     Collection<Task> taskList = service.sortedByDueDateDESCTasks(paginationDto);
     return converter.parsingTaskDataToTaskDTO(taskList);
+  }
+
+  //TODO - DONE
+  @PostMapping("/create-task")
+  @ResponseStatus(HttpStatus.CREATED)
+  public Task createTask(@RequestBody Task task) {
+    log.debug("Create task page");
+    return this.service.createTask(task);
   }
 
   @GetMapping("show-tasks/page/{pageNumber}")
@@ -74,14 +83,6 @@ public class Dashboard {
   }
 
   //TODO - DONE
-  @PostMapping("/create-task")
-  public Task create(@RequestBody Task task) {
-    log.debug("create task page");
-    System.out.println(task);
-    return service.saveTask(task);
-  }
-
-  //TODO - DONE
   @GetMapping("/task/{taskId}")
   public TaskDto getTaskById(@PathVariable long taskId) {
     log.debug("Show one task with id={}", taskId);
@@ -99,7 +100,7 @@ public class Dashboard {
 
   //TODO = DONE
   @PostMapping(value = {"/task/update/{taskId}"})
-  public Task updateTask(@PathVariable long taskId, @RequestBody TaskDto taskDto) {
+  public Task updateTask(@PathVariable long taskId, @Valid @RequestBody TaskDto taskDto) {
     log.info("Update task={} with id={}", taskDto, taskId);
     Task task = service.getTask(taskId);
     return service.updateTaskNew(task, taskDto);
@@ -107,6 +108,7 @@ public class Dashboard {
 
   //TODO - DONE
   @GetMapping("/delete-task/{taskId}")
+  @ResponseStatus(HttpStatus.OK)
   public Task deleteTask(@PathVariable long taskId) {
     log.debug("Delete task with id={}", taskId);
     return service.removeTask(taskId);

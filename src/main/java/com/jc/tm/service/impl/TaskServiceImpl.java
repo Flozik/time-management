@@ -38,7 +38,7 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
-    public Task saveTask(Task newTask) {
+    public Task createTask(Task newTask) {
         log.debug("saveTask input values:{}", newTask);
         newTask.setCreated(LocalDateTime.now());
         newTask = taskDao.save(newTask);
