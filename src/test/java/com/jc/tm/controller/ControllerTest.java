@@ -1,4 +1,3 @@
-/*
 package com.jc.tm.controller;
 
 import com.jc.tm.converter.Converter;
@@ -30,27 +29,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(Dashboard.class)
 class DashboardTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-    @MockBean
-    private TaskServiceImpl taskServiceMock;
-    @MockBean
-    private Converter converter;
+  @MockBean
+  private TaskServiceImpl taskServiceMock;
+  @MockBean
+  private Converter converter;
 
 //    @Before
 //    public void setUp() {
 //        mockMvc = MockMvcBuilders.standaloneSetup(new Dashboard(taskServiceMock, converter)).build();
 //    }
 
-    private String dateConverter(LocalDateTime time) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+  private String dateConverter(LocalDateTime time) {
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
-        String date = time.format(dateTimeFormatter);
-        return date;
-    }
+    String date = time.format(dateTimeFormatter);
+    return date;
+  }
 
-    @Test
+    /*@Test
     void shouldGetTaskById() throws Exception {
         Comment comment1 = Comment.builder().setId(1L).setText("comment 1").setCreated(LocalDateTime.now()).build();
         Comment comment2 = Comment.builder().setId(2L).setText("comment 2").setCreated(LocalDateTime.now()).build();
@@ -133,5 +132,5 @@ class DashboardTest {
     void createTask() throws Exception {
         mockMvc.perform(post("/add-task"))
                 .andExpect(status().is3xxRedirection());
-    }
-}*/
+    }*/
+}
