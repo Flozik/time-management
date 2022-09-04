@@ -92,10 +92,8 @@ public class Controller {
   //TODO - DONE
   @PostMapping(value = {"show-tasks/task/update/{taskId}"})
   public Task updateTaskStatus(@PathVariable long taskId, @RequestBody TaskDto status) {
-    log.info("Update TasksTableRows Status: {}", status);
-//    Task task = service.getTask(taskId);
-//    return service.updateTaskStatus(task, status);
-    return null;
+    log.info("Controller. updateTaskStatus. status: {}", status);
+    return this.service.updateTaskStatus(taskId, status);
   }
 
   //TODO = DONE
