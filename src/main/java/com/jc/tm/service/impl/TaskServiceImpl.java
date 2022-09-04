@@ -1,5 +1,6 @@
 package com.jc.tm.service.impl;
 
+import com.jc.tm.converter.Converter;
 import com.jc.tm.db.dao.jpa.CommentDao;
 import com.jc.tm.db.dao.jpa.TaskDao;
 import com.jc.tm.db.entity.Comment;
@@ -33,19 +34,20 @@ public class TaskServiceImpl implements ITaskService {
 
   private final TaskDao taskDao;
   private final CommentDao commentDao;
+  private final Converter converter;
 
   @Autowired
-  public TaskServiceImpl(TaskDao taskDao, CommentDao commentDao) {
+  public TaskServiceImpl(TaskDao taskDao, CommentDao commentDao, Converter converter) {
     this.taskDao = taskDao;
     this.commentDao = commentDao;
+    this.converter = converter;
   }
 
   @Override
   public Task createTask(Task task) {
-    log.info("saveTask input values:{}", task);
+    log.info("TaskServiceImpl. createTask. Task:{}", task);
     task.setCreated(LocalDateTime.now());
     task = taskDao.save(task);
-    log.info("new task {} was saved", task);
     return task;
   }
 
@@ -112,21 +114,19 @@ public class TaskServiceImpl implements ITaskService {
   }
 
   @Override
-  public Task getTask(Long id) {
-    log.info("getTask input values:{}", id);
-    if (id == null) {
-      log.error("Id {} not found", id);
-      throw new NullPointerException();
-    } else {
-      return taskDao.findById(id).orElse(null);
-    }
+  public TaskDto getTask(Long taskId) {
+    log.info("TaskServiceImpl. getTask. taskId:{}", taskId);
+    Task task = this.taskDao.findById(taskId).orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
+    return converter.taskToTaskDto(task);
   }
 
   //TODO - not used
   @Override
   public Task getTask(Task task) {
     log.info("getTask input values:{}", task);
-    return this.getTask(task.getId());
+//    return this.getTask(task.getId());
+    return null;
   }
 
 
@@ -142,11 +142,11 @@ public class TaskServiceImpl implements ITaskService {
   }
 
   @Override
-  public void deleteTask(Long id) {
-    log.info("delete input values:{}", id);
-    this.taskDao.findById(id).orElseThrow(
+  public void deleteTask(Long taskId) {
+    log.info("TaskServiceImpl. deleteTask. taskId:{}", taskId);
+    this.taskDao.findById(taskId).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
-    this.taskDao.deleteById(id);
+    this.taskDao.deleteById(taskId);
   }
 
   private String checkSortBy(String sortBy) {
@@ -182,7 +182,8 @@ public class TaskServiceImpl implements ITaskService {
       log.info("Task was found:{}", task);
       newComment.setCreated(LocalDateTime.now());
     }
-    return this.addComment(task, newComment);
+//    return this.addComment(task, newComment);
+    return null;
   }
 
   @Override

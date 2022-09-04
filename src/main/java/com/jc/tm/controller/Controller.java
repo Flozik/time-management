@@ -53,7 +53,7 @@ public class Controller {
   @PostMapping("/create-task")
   @ResponseStatus(HttpStatus.CREATED)
   public Task createTask(@RequestBody Task task) {
-    log.info("Create task page");
+    log.info("Controller. createTask. Task:{}", task);
     return this.service.createTask(task);
   }
 
@@ -85,17 +85,17 @@ public class Controller {
   //TODO - DONE
   @GetMapping("/task/{taskId}")
   public TaskDto getTaskById(@PathVariable long taskId) {
-    log.info("Show one task with id={}", taskId);
-    Task task = service.getTask(taskId);
-    return converter.taskToTaskDto(task);
+    log.info("Controller. getTaskById. taskId:{}", taskId);
+    return this.service.getTask(taskId);
   }
 
   //TODO - DONE
   @PostMapping(value = {"show-tasks/task/update/{taskId}"})
   public Task updateTaskStatus(@PathVariable long taskId, @RequestBody TaskDto status) {
     log.info("Update TasksTableRows Status: {}", status);
-    Task task = service.getTask(taskId);
-    return service.updateTaskStatus(task, status);
+//    Task task = service.getTask(taskId);
+//    return service.updateTaskStatus(task, status);
+    return null;
   }
 
   //TODO = DONE
@@ -103,14 +103,15 @@ public class Controller {
   public Task updateTask(@PathVariable long taskId,
                          @Valid @RequestBody TaskDto taskDto) {
     log.info("Update task={} with id={}", taskDto, taskId);
-    Task task = service.getTask(taskId);
-    return service.updateTaskNew(task, taskDto);
+//    Task task = service.getTask(taskId);
+//    return service.updateTaskNew(task, taskDto);
+    return null;
   }
 
   @PostMapping("/delete-task/{taskId}")
   @ResponseStatus(HttpStatus.OK)
   public void deleteTask(@PathVariable long taskId) {
-    log.info("Delete task with id={}", taskId);
+    log.info("Controller. deleteTask. id={}", taskId);
     service.deleteTask(taskId);
   }
 
