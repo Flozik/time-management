@@ -7,6 +7,7 @@ import com.jc.tm.dto.TaskDto;
 import org.springframework.data.domain.Page;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface ITaskService {
     /**
@@ -39,7 +40,7 @@ public interface ITaskService {
      * @param id idetnifier of task
      * @return Task object or null if object was not found
      */
-    public Task getTask(Long id) ;
+    public TaskDto getTask(Long id) ;
 
     /**
      * find object task. this method calls getTask(Long id)

@@ -20,7 +20,7 @@ import java.util.List;
 public class Converter {
 
     private String dateConverter(LocalDateTime time) {
-        log.info("dateConverter method. Input values:{}", time);
+        log.info("Converter. dateConverter. time:{}", time);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
         String date = time.format(dateTimeFormatter);
@@ -28,7 +28,7 @@ public class Converter {
     }
 
     public TaskDto taskToTaskDto(Task task) {
-        log.info("taskToTaskDto method. Input values:{}", task);
+        log.info("Converter. taskToTaskDto. task:{}", task);
         TaskDto taskDto = new TaskDto();
         LocalDateTime created = task.getCreated();
         LocalDateTime dueDate = task.getDueDate();
@@ -81,7 +81,7 @@ public class Converter {
     }
 
     private Collection<CommentDto> parsingCommentDataToCommentDTO(Collection<Comment> comments) {
-        log.info("parsingCommentDataToCommentDTO method.");
+        log.info("Converter. parsingCommentDataToCommentDTO. Comments:{}", comments);
         Collection<CommentDto> commentResult = new ArrayList<>();
 
         for (Comment comment : comments) {
