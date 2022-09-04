@@ -24,7 +24,7 @@ public interface ITaskService {
      */
     public void deleteTask(Long id) ;
 
-    public Task updateTaskStatus(Task freshTask, TaskDto status);
+    public Task updateTaskStatus(long taskId, TaskDto status);
 
     public Task updateTaskNew(Task task, TaskDto taskDto);
 

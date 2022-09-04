@@ -52,12 +52,28 @@ public class TaskServiceImpl implements ITaskService {
   }
 
   @Override
-  public Task updateTaskStatus(Task freshTask, TaskDto status) {
-    log.info("updateTask input values:{}", status);
-    Status newStatus = status.getStatus();
-    freshTask.setStatus(newStatus);
-    taskDao.save(freshTask);
-    return freshTask;
+  public TaskDto getTask(Long taskId) {
+    log.info("TaskServiceImpl. getTask. taskId:{}", taskId);
+    Task task = this.taskDao.findById(taskId).orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
+    return converter.taskToTaskDto(task);
+  }
+
+  //TODO - not used
+  @Override
+  public Task getTask(Task task) {
+    log.info("getTask input values:{}", task);
+//    return this.getTask(task.getId());
+    return null;
+  }
+
+  @Override
+  public Task updateTaskStatus(long taskId, TaskDto status) {
+    log.info("TaskServiceImpl. updateTaskStatus. taskId:{}, taskDto:{}", taskId, status);
+    Task task = this.taskDao.findById(taskId).orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
+    task.setStatus(status.getStatus());
+    return this.taskDao.save(task);
   }
 
   @Override
@@ -112,23 +128,6 @@ public class TaskServiceImpl implements ITaskService {
     }
     return freshTask;
   }
-
-  @Override
-  public TaskDto getTask(Long taskId) {
-    log.info("TaskServiceImpl. getTask. taskId:{}", taskId);
-    Task task = this.taskDao.findById(taskId).orElseThrow(
-            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
-    return converter.taskToTaskDto(task);
-  }
-
-  //TODO - not used
-  @Override
-  public Task getTask(Task task) {
-    log.info("getTask input values:{}", task);
-//    return this.getTask(task.getId());
-    return null;
-  }
-
 
   // TODO - show tasks and find by name  method
   @Override
