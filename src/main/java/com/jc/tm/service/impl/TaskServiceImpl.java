@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -56,7 +57,7 @@ public class TaskServiceImpl implements ITaskService {
     log.info("TaskServiceImpl. getTask. taskId:{}", taskId);
     Task task = this.taskDao.findById(taskId).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
-    return converter.taskToTaskDto(task);
+    return this.converter.taskToTaskDto(task);
   }
 
   //TODO - not used
@@ -68,17 +69,18 @@ public class TaskServiceImpl implements ITaskService {
   }
 
   @Override
-  public Task updateTaskStatus(long taskId, TaskDto status) {
+  public TaskDto updateTaskStatus(long taskId, TaskDto status) {
     log.info("TaskServiceImpl. updateTaskStatus. taskId:{}, taskDto:{}", taskId, status);
     Task task = this.taskDao.findById(taskId).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
     task.setStatus(status.getStatus());
-    return this.taskDao.save(task);
+    this.taskDao.save(task);
+    return this.converter.taskToTaskDto(task);
   }
 
   @Override
   public Task updateTaskNew(Task task, TaskDto taskDto) {
-    log.info("updateTaskNew input values:{}\nTaskDto value: {}", task, taskDto);
+    /*log.info("updateTaskNew input values:{}\nTaskDto value: {}", task, taskDto);
     var freshTask = taskDto;
     task.setName(taskDto.getName());
     task.setDescription(taskDto.getDescription());
@@ -96,14 +98,33 @@ public class TaskServiceImpl implements ITaskService {
       }
     }
     taskDao.save(task);
-    return task;
+    return task;*/
+    return null;
   }
 
-  // TODO - not used , need to delete this method
   @Override
-  public Task updateTask(Task freshTask) {
-    log.info("updateTask input values:{}", freshTask);
-    var oldTask = this.getTask(freshTask);
+  public TaskDto updateTask(long taskId, TaskDto taskDto) {
+    log.info("TaskServiceImpl. updateTask. id:{}, taskDto:{}", taskId, taskDto);
+    Task task = this.taskDao.findById(taskId).orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
+    task.setName(taskDto.getName());
+    task.setDescription(taskDto.getDescription());
+    task.setStatus(taskDto.getStatus());
+    task.setPriority(taskDto.getPriority());
+    task.setDueDate(LocalDateTime.parse(taskDto.getDueDate()));
+    task.setProgress(taskDto.getProgress());
+    task.setProjects(converter.projectDtoToProject(taskDto.getProjectName()));
+    if (taskDto.getProgress() >= 10 && task.getStatus() == Status.TODO) {
+      task.setStatus(Status.IN_PROGRESS);
+    }
+    if (taskDto.getProgress() == 100) {
+      if (task.getStatus() == Status.IN_PROGRESS || task.getStatus() == Status.PAUSE) {
+        task.setStatus(Status.COMPLETE);
+      }
+    }
+    this.taskDao.save(task);
+    return this.converter.taskToTaskDto(task);
+    /*var oldTask = this.getTask(freshTask);
     if (oldTask == null) {
       log.error("This task {} not found", freshTask);
       throw new NullPointerException();
@@ -126,7 +147,7 @@ public class TaskServiceImpl implements ITaskService {
       }
       taskDao.save(oldTask);
     }
-    return freshTask;
+    return freshTask;*/
   }
 
   // TODO - show tasks and find by name  method

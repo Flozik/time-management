@@ -99,6 +99,14 @@ public class Converter {
         return projectDto;
     }
 
+    public Project projectDtoToProject(ProjectDto projectDto) {
+        log.info("Converter. projectDtoToProject. projectDto:{}", projectDto);
+        Project project = new Project();
+        project.setId(projectDto.getId());
+        project.setName(projectDto.getName());
+        return project;
+    }
+
     public List<ProjectDto> parsingProjectDataToProjectDTO(List<Project> projects) {
         log.info("parsing ProjectData to Project DTO");
         List<ProjectDto> projectDtoList = new ArrayList<>();
