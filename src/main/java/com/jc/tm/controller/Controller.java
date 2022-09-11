@@ -91,25 +91,23 @@ public class Controller {
 
   //TODO - DONE
   @PostMapping(value = {"show-tasks/task/update/{taskId}"})
-  public Task updateTaskStatus(@PathVariable long taskId, @RequestBody TaskDto status) {
-    log.info("Controller. updateTaskStatus. status: {}", status);
+  public TaskDto updateTaskStatus(@PathVariable long taskId, @RequestBody TaskDto status) {
+    log.info("Controller. updateTaskStatus. id:{} status:{}", taskId, status);
     return this.service.updateTaskStatus(taskId, status);
   }
 
   //TODO = DONE
   @PostMapping(value = {"/task/update/{taskId}"})
-  public Task updateTask(@PathVariable long taskId,
+  public TaskDto updateTask(@PathVariable long taskId,
                          @Valid @RequestBody TaskDto taskDto) {
-    log.info("Update task={} with id={}", taskDto, taskId);
-//    Task task = service.getTask(taskId);
-//    return service.updateTaskNew(task, taskDto);
-    return null;
+    log.info("Controller. updateTask. id:{}, taskDto:{}", taskId, taskDto);
+    return this.service.updateTask(taskId, taskDto);
   }
 
   @PostMapping("/delete-task/{taskId}")
   @ResponseStatus(HttpStatus.OK)
   public void deleteTask(@PathVariable long taskId) {
-    log.info("Controller. deleteTask. id={}", taskId);
+    log.info("Controller. deleteTask. id:{}", taskId);
     service.deleteTask(taskId);
   }
 

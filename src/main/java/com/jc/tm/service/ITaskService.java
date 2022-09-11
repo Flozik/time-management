@@ -24,7 +24,7 @@ public interface ITaskService {
      */
     public void deleteTask(Long id) ;
 
-    public Task updateTaskStatus(long taskId, TaskDto status);
+    public TaskDto updateTaskStatus(long taskId, TaskDto status);
 
     public Task updateTaskNew(Task task, TaskDto taskDto);
 
@@ -33,7 +33,7 @@ public interface ITaskService {
      * @param freshTask new object or updated object of task
      * @return updated object of task
      */
-    public Task updateTask(Task freshTask) ;
+    public TaskDto updateTask(long taskId, TaskDto taskDto) ;
 
     /**
      * find task object by id
