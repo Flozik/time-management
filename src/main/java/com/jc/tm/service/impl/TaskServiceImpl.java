@@ -113,7 +113,7 @@ public class TaskServiceImpl implements ITaskService {
     task.setPriority(taskDto.getPriority());
     task.setDueDate(LocalDateTime.parse(taskDto.getDueDate()));
     task.setProgress(taskDto.getProgress());
-    task.setProjects(converter.projectDtoToProject(taskDto.getProjectName()));
+//    task.setProjects(converter.projectDtoToProject(taskDto.getProjectName()));
     if (taskDto.getProgress() >= 10 && task.getStatus() == Status.TODO) {
       task.setStatus(Status.IN_PROGRESS);
     }
