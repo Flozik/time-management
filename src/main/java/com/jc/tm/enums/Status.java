@@ -1,4 +1,4 @@
-package com.jc.tm.util;
+package com.jc.tm.enums;
 
 /**
  * status of for task

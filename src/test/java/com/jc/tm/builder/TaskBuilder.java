@@ -1,9 +1,9 @@
 package com.jc.tm.builder;
 
-import com.jc.tm.util.Status;
+import com.jc.tm.enums.Status;
 import com.jc.tm.db.entity.Comment;
 import com.jc.tm.db.entity.Task;
-import com.jc.tm.util.Priority;
+import com.jc.tm.enums.Priority;
 import java.time.LocalDateTime;
 import java.util.List;
 

@@ -8,9 +8,8 @@ import com.jc.tm.db.entity.Task;
 import com.jc.tm.dto.PaginationDto;
 import com.jc.tm.dto.TaskDto;
 import com.jc.tm.service.ITaskService;
-import com.jc.tm.util.Status;
+import com.jc.tm.enums.Status;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -111,9 +109,11 @@ public class TaskServiceImpl implements ITaskService {
     task.setDescription(taskDto.getDescription());
     task.setStatus(taskDto.getStatus());
     task.setPriority(taskDto.getPriority());
-    task.setDueDate(LocalDateTime.parse(taskDto.getDueDate()));
+    task.setDueDate(LocalDateTime.parse(taskDto.getDueDate())); //FIXME: work incorrect.
     task.setProgress(taskDto.getProgress());
-//    task.setProjects(converter.projectDtoToProject(taskDto.getProjectName()));
+    task.setProjects(converter.projectDtoToProject(taskDto.getProjectName())); //FIXME: don't work.
+    task.setImportance(taskDto.getImportance());
+    task.setUrgency(taskDto.getUrgency());
     if (taskDto.getProgress() >= 10 && task.getStatus() == Status.TODO) {
       task.setStatus(Status.IN_PROGRESS);
     }
@@ -124,30 +124,6 @@ public class TaskServiceImpl implements ITaskService {
     }
     this.taskDao.save(task);
     return this.converter.taskToTaskDto(task);
-    /*var oldTask = this.getTask(freshTask);
-    if (oldTask == null) {
-      log.error("This task {} not found", freshTask);
-      throw new NullPointerException();
-    } else {
-      log.info("This task {} was update", freshTask);
-      oldTask.setName(freshTask.getName());
-      oldTask.setPriority(freshTask.getPriority());
-      oldTask.setStatus(freshTask.getStatus());
-      oldTask.setDescription(freshTask.getDescription());
-      oldTask.setDueDate(freshTask.getDueDate());
-      oldTask.setProgress(freshTask.getProgress());
-      oldTask.setProjects(freshTask.getProjects());
-      if (freshTask.getProgress() >= 10 && oldTask.getStatus() == Status.TODO) {
-        oldTask.setStatus(Status.IN_PROGRESS);
-      }
-      if (freshTask.getProgress() == 100) {
-        if (oldTask.getStatus() == Status.IN_PROGRESS || oldTask.getStatus() == Status.PAUSE) {
-          oldTask.setStatus(Status.COMPLETE);
-        }
-      }
-      taskDao.save(oldTask);
-    }
-    return freshTask;*/
   }
 
   // TODO - show tasks and find by name  method

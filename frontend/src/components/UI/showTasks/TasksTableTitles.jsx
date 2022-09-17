@@ -10,8 +10,8 @@ const TasksTableTitles = ({tasks, deleteTask, setStatus}) => {
           <tr>
             <th scope="col">Name</th>
             <th scope="col">Status</th>
-            <th scope="col">Progress</th>
-            <th scope="col">Due date</th>
+            <th scope="col">Importance</th>
+            <th scope="col">Urgency</th>
             <th scope="col">Priority</th>
             <th scope="col">Projects</th>
             <th scope="col">Delete</th>
