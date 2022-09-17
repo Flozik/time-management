@@ -7,10 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface TaskDao extends BaseDao<Task, Long> {
 
     Page<Task> findAll(Pageable pageable);
     @Query(value = "select * from task where task.name like %:search%", nativeQuery = true)
     Page<Task> findAllBy(Pageable pageable, @Param("search") String search);
+    /*@Query(value = "select * from task", nativeQuery = true)
+    Optional<Task> findByIdMy(long id);*/
 }

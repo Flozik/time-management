@@ -47,6 +47,8 @@ public class Converter {
         taskDto.setPriority(task.getPriority());
         taskDto.setComments(parsingCommentDataToCommentDTO(task.getComments()));
         taskDto.setProgress(task.getProgress());
+        taskDto.setImportance(task.getImportance());
+        taskDto.setUrgency(task.getUrgency());
 
         if (task.getProjects() != null) {
             ProjectDto projectDTO = new ProjectDto();
