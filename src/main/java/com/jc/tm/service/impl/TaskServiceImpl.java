@@ -129,12 +129,11 @@ public class TaskServiceImpl implements ITaskService {
   // TODO - show tasks and find by name  method
   @Override
   public Page<Task> loadTask(PaginationDto paginationDto, String searchBy, String sortBy) {
-    log.info("loadTasks method with paginationDto={} searchBy={} sortBy={}", paginationDto, searchBy, sortBy);
+    log.info("TaskServiceImpl. loadTask. PaginationDto:{}, searchBy:{}, sortBy:{}", paginationDto, searchBy, sortBy);
     searchBy = this.checkSearchBy(searchBy);
     sortBy = this.checkSortBy(sortBy);
     Sort sort = Sort.by(Sort.Direction.ASC, sortBy);
-    Page<Task> pt = taskDao.findAllBy(PageRequest.of(paginationDto.getIndex() - 1, paginationDto.getSize(), sort), searchBy);
-    return pt;
+    return taskDao.findAllBy(PageRequest.of(paginationDto.getIndex() - 1, paginationDto.getSize(), sort), searchBy);
   }
 
   @Override
@@ -146,7 +145,7 @@ public class TaskServiceImpl implements ITaskService {
   }
 
   private String checkSortBy(String sortBy) {
-    log.info("Check sortBy={}", sortBy);
+    log.info("TaskServiceImpl. checkSortBy. SortBy:{}", sortBy);
     if (sortBy == null || sortBy.isBlank()) {
       return "name";
     } else if (sortBy.equals("status")) {
@@ -160,7 +159,7 @@ public class TaskServiceImpl implements ITaskService {
   }
 
   private String checkSearchBy(String searchBy) {
-    log.info("Check searchBy={}", searchBy);
+    log.info("TaskServiceImpl. checkSearchBy. SearchBy:{}", searchBy);
     if (searchBy == null || searchBy.isBlank()) {
       return "";
     }
