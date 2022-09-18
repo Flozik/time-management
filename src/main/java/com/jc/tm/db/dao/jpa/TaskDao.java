@@ -13,8 +13,7 @@ import java.util.Optional;
 public interface TaskDao extends BaseDao<Task, Long> {
 
     Page<Task> findAll(Pageable pageable);
-    @Query(value = "select * from task where task.name like %:search%", nativeQuery = true)
+    @Query(value = "select * from task where task.name like %:search% order by importance DESC, urgency DESC",
+            nativeQuery = true)
     Page<Task> findAllBy(Pageable pageable, @Param("search") String search);
-    /*@Query(value = "select * from task", nativeQuery = true)
-    Optional<Task> findByIdMy(long id);*/
 }

@@ -1,5 +1,5 @@
 package com.jc.tm.enums;
 
 public enum Urgency {
-  URGENT, NOT_URGENT
+  NOT_URGENT, URGENT
 }

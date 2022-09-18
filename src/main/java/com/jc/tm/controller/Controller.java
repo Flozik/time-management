@@ -61,13 +61,12 @@ public class Controller {
   public Collection<TaskDto> show(String searchBy,
                                   @PathVariable(value = "pageNumber") int pageNumber,
                                   @RequestParam(name = "sortBy", required = false) String sortBy) {
-    log.info("Show tasks page with params: searchBy={}, pageNumber={}, sortBy={}", searchBy, pageNumber, sortBy);
+    log.info("Controller. show. SearchBy:{}, pageNumber:{}, sortBy:{}", searchBy, pageNumber, sortBy);
     PaginationDto paginationDto = new PaginationDto();
     paginationDto.setIndex(pageNumber);
     paginationDto.setSize(pageSize);
     var taskList = service.loadTask(paginationDto, searchBy, sortBy);
-    var result = converter.parsingTaskDataToTaskDTO(taskList.getContent());
-    return result;
+    return converter.parsingTaskDataToTaskDTO(taskList.getContent());
   }
 
   @GetMapping("show-tasks/searchBy={searchBy}")

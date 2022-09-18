@@ -60,7 +60,7 @@ public class Converter {
     }
 
     public Collection<TaskDto> parsingTaskDataToTaskDTO(Collection<Task> tasks) {
-        log.info("parsingTaskDataToTaskDTO method.");
+        log.info("Converter. parsingTaskDataToTaskDTO. Tasks:{}", tasks);
         Collection<TaskDto> taskResult = new ArrayList<>();
         for (Task task : tasks) {
             TaskDto taskDto = taskToTaskDto(task);
