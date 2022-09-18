@@ -15,6 +15,8 @@ const ShowTask = () => {
     dueDate: '',
     priority: '',
     progress: 0,
+    importance: '',
+    urgency: '',
     projectName: {
       id: 0,
       name: '',
@@ -70,6 +72,10 @@ const ShowTask = () => {
               }
               <dt className="col-6">Status :</dt>
               <dd className="col-6">{task.status}</dd>
+              <dt className="col-6">Importance :</dt>
+              <dd className="col-6">{task.importance}</dd>
+              <dt className="col-6">Urgency :</dt>
+              <dd className="col-6">{task.urgency}</dd>
               <dt className="col-6">Progress :</dt>
               <dd className="col-6">{task.progress}</dd>
               <dt className="col-6">Priority :</dt>

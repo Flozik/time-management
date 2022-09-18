@@ -13,6 +13,8 @@ const UpdateTaskForm = () => {
     status: '',
     dueDate: '',
     priority: '',
+    importance: '',
+    urgency: '',
     progress: 0,
     projectName: {
       id: 0,
@@ -109,6 +111,32 @@ const UpdateTaskForm = () => {
               <option value="IN_PROGRESS">In progress</option>
               <option value="COMPLETE">Complete</option>
               <option value="PAUSE">Pause</option>
+            </select>
+          </div>
+          <div className="col-md-5 mb-3">
+            <label>Importance</label>
+            <select
+              className="form-control"
+              name="importance"
+              value={task.importance}
+              onChange={(e) =>
+                setTask((state) => ({...state, importance: e.target.value}))}
+            >
+              <option value="IMPORTANT">Important</option>
+              <option value="NOT_IMPORTANT">Not important</option>
+            </select>
+          </div>
+          <div className="col-md-5 mb-3">
+            <label>Urgency</label>
+            <select
+              className="form-control"
+              name="urgency"
+              value={task.urgency}
+              onChange={(e) =>
+                setTask((state) => ({...state, urgency: e.target.value}))}
+            >
+              <option value="URGENT">Urgent</option>
+              <option value="NOT_URGENT">Not urgent</option>
             </select>
           </div>
           <div className="col-md-5 mb-3">
