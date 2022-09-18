@@ -111,7 +111,7 @@ public class TaskServiceImpl implements ITaskService {
     task.setPriority(taskDto.getPriority());
     task.setDueDate(LocalDateTime.parse(taskDto.getDueDate())); //FIXME: work incorrect.
     task.setProgress(taskDto.getProgress());
-    task.setProjects(converter.projectDtoToProject(taskDto.getProjectName())); //FIXME: don't work.
+//    task.setProjects(converter.projectDtoToProject(taskDto.getProjectName())); //FIXME: don't work.
     task.setImportance(taskDto.getImportance());
     task.setUrgency(taskDto.getUrgency());
     if (taskDto.getProgress() >= 10 && task.getStatus() == Status.TODO) {
