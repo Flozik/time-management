@@ -5,6 +5,8 @@ import TasksService from "../../../services/TasksService";
 const CreateTaskForm = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [importance, setImportance] = useState('');
+  const [urgency, setUrgency] = useState('');
   const [priority, setPriority] = useState('NORMAL');
   const [dueDate, setDueDate] = useState('');
   const [project, setProject] = useState('');
@@ -71,7 +73,30 @@ const CreateTaskForm = () => {
               onChange={(e) => setDescription(e.target.value)}
             >Description</textarea>
           </div>
-
+          <div className="col-md-5 mb-3">
+            <label>Importence</label>
+            <select
+              className="form-select"
+              name="importance"
+              value={importance}
+              onChange={(e) => setImportance(e.target.value)}
+            >
+              <option value="IMPORTANT">Important</option>
+              <option value="NOT_IMPORTANT">Not important</option>
+            </select>
+          </div>
+          <div className="col-md-5 mb-3">
+            <label>Urgency</label>
+            <select
+              className="form-select"
+              name="urgency"
+              value={urgency}
+              onChange={(e) => setUrgency(e.target.value)}
+            >
+              <option value="URGENT">Urgent</option>
+              <option value="NOT_URGENT">Not urgent</option>
+            </select>
+          </div>
           <div className="col-md-5 mb-3">
             <label>Priority</label>
             <select
